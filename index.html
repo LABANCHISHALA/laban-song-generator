@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<title>Laban Song Generator</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;800&display=swap">
+<link rel="stylesheet" href="style.css"></head>
+<body><main>
+<h1>Laban</h1><p class="sub">Song generator</p><div class="strip"></div>
+<p class="note">Paste your lyrics, describe the feeling, and Laban sings them with a built-in choir engine and live instruments. Voices are synthesized in your browser (no cloud AI), so they sound like a synthetic African choir, not a recorded person. For the clearest words, spell them the way they sound and pick the lyrics language.</p>
+
+<label class="f" for="title">Song title</label>
+<input type="text" id="title" placeholder="Mukwai Wesu" maxlength="60">
+<label class="f" for="lyr">Lyrics</label>
+<textarea id="lyr" placeholder="One line per row.&#10;Mukwai Lesa, tulebula ulemekwa&#10;Mu mutima wesu tulekuimbila&#10;Halleluya, halleluya"></textarea>
+<label class="f" for="desc">Describe the song</label>
+<input type="text" id="desc" placeholder="Joyful Zambian gospel, upbeat, hopeful, church celebration" maxlength="160">
+
+<fieldset><legend>Voices</legend><div class="chips" id="voices">
+<label><input type="radio" name="v" value="male"><span>Male lead</span></label>
+<label><input type="radio" name="v" value="female"><span>Female lead</span></label>
+<label><input type="radio" name="v" value="duet"><span>Male and female duet</span></label>
+<label><input type="radio" name="v" value="choir"><span>Choir (4 parts)</span></label>
+<label><input type="radio" name="v" value="ens" checked><span>Leads with choir</span></label>
+</div></fieldset>
+
+<div class="row"><div><label class="f" for="sty">Style</label>
+<select id="sty"><option value="auto">Auto, from description</option><option value="gospel">Gospel</option><option value="afrobeat">Afrobeat</option><option value="rumba">Rumba and soukous</option><option value="amapiano">Amapiano</option><option value="traditional">Traditional village</option><option value="ballad">Slow ballad</option></select></div>
+<div><label class="f" for="lang">Lyrics language</label><select id="lang"><option value="auto">Auto-detect</option><option value="bantu">Bemba, Nyanja, Tonga, Zulu and other Bantu</option><option value="english">English</option></select></div>
+<div><label class="f" for="rev">Hall reverb</label><select id="rev"><option value=".25">Small room</option><option value=".4" selected>Church hall</option><option value=".6">Cathedral</option></select></div></div>
+
+<fieldset><legend>Instruments</legend><div class="chips" id="ins"></div></fieldset>
+
+<button id="go">Compose my song</button>
+<div id="err" role="alert"></div>
+
+<section id="prog" aria-live="polite"><div class="stats"><span id="ph">Starting</span><span id="pc">0%</span><span id="sc"></span></div><div class="bar"><div class="fill" id="fill"></div></div></section>
+
+<section id="done"><h2>Your song is ready to play and download</h2><div id="info" class="note" style="margin:0"></div>
+<div id="now"></div><audio id="au" controls></audio>
+<div class="btns"><button id="dl">Download MP3</button><button class="alt" id="again">Make another</button></div><div id="msg"></div></section>
+</main>
+
+<script src="assets/js/lame.min.js"></script>
+<script src="assets/js/jszip.min.js"></script>
+<script src="script.js"></script></body></html>

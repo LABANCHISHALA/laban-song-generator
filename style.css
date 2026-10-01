@@ -1,0 +1,38 @@
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#eef3ec;--ink:#12332f;--mut:#4d6a64;--card:#fff;--line:#c7d6cf;--acc:#c9731a;--onacc:#fff;--track:#dbe7e0;--pat:repeating-linear-gradient(90deg,#d98a1f 0 12px,#1b6b5a 12px 20px,#b4432b 20px 28px,#f2e6c8 28px 32px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d2825;--ink:#f1eadb;--mut:#a5bdb5;--card:#143733;--line:#2b524b;--acc:#f0a93b;--onacc:#10231f;--track:#1d4640}}
+:root[data-theme="dark"]{--bg:#0d2825;--ink:#f1eadb;--mut:#a5bdb5;--card:#143733;--line:#2b524b;--acc:#f0a93b;--onacc:#10231f;--track:#1d4640}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:760px;margin:0 auto;padding:28px 18px 60px}
+h1{font-size:clamp(44px,12vw,76px);line-height:.95;margin:0;font-weight:800;letter-spacing:-.02em}
+.sub{font-size:20px;margin:6px 0 14px;color:var(--mut)}
+.strip{height:14px;background:var(--pat);border-radius:2px}
+.note{font-size:14px;color:var(--mut);margin:12px 0 22px;max-width:62ch}
+label.f{display:block;font-weight:800;margin:18px 0 6px}
+textarea,input[type=text],select{width:100%;font:inherit;color:var(--ink);background:var(--card);border:2px solid var(--line);border-radius:6px;padding:10px 12px}
+textarea{min-height:190px;resize:vertical}
+textarea:focus,input:focus,select:focus,button:focus-visible,.chips input:focus-visible+span{outline:3px solid var(--acc);outline-offset:2px}
+fieldset{border:0;padding:0;margin:18px 0 0}
+legend{font-weight:800;padding:0;margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips label{position:relative}
+.chips input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.chips span{display:block;padding:8px 14px;border:2px solid var(--line);border-radius:999px;background:var(--card);cursor:pointer;font-size:15px}
+.chips input:checked+span{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+@media(max-width:560px){.row{grid-template-columns:1fr}}
+button{font:inherit;font-weight:800;border:0;border-radius:6px;padding:14px 22px;background:var(--acc);color:var(--onacc);cursor:pointer}
+button.alt{background:transparent;color:var(--ink);border:2px solid var(--ink)}
+button:disabled{opacity:.55;cursor:wait}
+#go{width:100%;margin-top:26px;font-size:18px}
+#prog,#done{display:none;margin-top:26px;padding:18px;background:var(--card);border:2px solid var(--line);border-radius:8px}
+.bar{height:22px;background:var(--track);border-radius:3px;overflow:hidden;margin:10px 0}
+.fill{height:100%;width:0;background:var(--pat);transition:width .15s linear}
+.stats{display:flex;justify-content:space-between;gap:10px;font-weight:800;flex-wrap:wrap}
+#done h2{margin:0 0 4px;font-size:26px}
+audio{width:100%;margin:12px 0}
+#now{min-height:28px;font-size:18px;font-weight:500;margin-bottom:10px}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+#msg{margin-top:12px;color:var(--mut);font-size:14px}
+#err{color:#b4432b;font-weight:800;margin-top:10px}
