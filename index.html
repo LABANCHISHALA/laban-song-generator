@@ -1,46 +1,425 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-<title>Laban Song Generator</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;800&display=swap">
-<link rel="stylesheet" href="style.css"></head>
-<body><main>
-<h1>Laban</h1><p class="sub">Song generator</p><div class="strip"></div>
-<p class="note">Paste your lyrics, describe the feeling, and Laban sings them with a built-in choir engine and live instruments. Voices are synthesized in your browser (no cloud AI), so they sound like a synthetic African choir, not a recorded person. For the clearest words, spell them the way they sound and pick the lyrics language.</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<label class="f" for="title">Song title</label>
-<input type="text" id="title" placeholder="Mukwai Wesu" maxlength="60">
-<label class="f" for="lyr">Lyrics</label>
-<textarea id="lyr" placeholder="One line per row.&#10;Mukwai Lesa, tulebula ulemekwa&#10;Mu mutima wesu tulekuimbila&#10;Halleluya, halleluya"></textarea>
-<label class="f" for="desc">Describe the song</label>
-<input type="text" id="desc" placeholder="Joyful Zambian gospel, upbeat, hopeful, church celebration" maxlength="160">
+  <title>Laban Song Generator</title>
 
-<fieldset><legend>Voices</legend><div class="chips" id="voices">
-<label><input type="radio" name="v" value="male"><span>Male lead</span></label>
-<label><input type="radio" name="v" value="female"><span>Female lead</span></label>
-<label><input type="radio" name="v" value="duet"><span>Male and female duet</span></label>
-<label><input type="radio" name="v" value="choir"><span>Choir (4 parts)</span></label>
-<label><input type="radio" name="v" value="ens" checked><span>Leads with choir</span></label>
-</div></fieldset>
+  <meta
+    name="description"
+    content="Laban Song Generator - Create original song drafts with different genres, moods and languages."
+  >
 
-<div class="row"><div><label class="f" for="sty">Style</label>
-<select id="sty"><option value="auto">Auto, from description</option><option value="gospel">Gospel</option><option value="afrobeat">Afrobeat</option><option value="rumba">Rumba and soukous</option><option value="amapiano">Amapiano</option><option value="traditional">Traditional village</option><option value="ballad">Slow ballad</option></select></div>
-<div><label class="f" for="lang">Lyrics language</label><select id="lang"><option value="auto">Auto-detect</option><option value="bantu">Bemba, Nyanja, Tonga, Zulu and other Bantu</option><option value="english">English</option></select></div>
-<div><label class="f" for="rev">Hall reverb</label><select id="rev"><option value=".25">Small room</option><option value=".4" selected>Church hall</option><option value=".6">Cathedral</option></select></div></div>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<fieldset><legend>Instruments</legend><div class="chips" id="ins"></div></fieldset>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
 
-<button id="go">Compose my song</button>
-<div id="err" role="alert"></div>
+  <link rel="stylesheet" href="style.css">
+</head>
 
-<section id="prog" aria-live="polite"><div class="stats"><span id="ph">Starting</span><span id="pc">0%</span><span id="sc"></span></div><div class="bar"><div class="fill" id="fill"></div></div></section>
+<body>
 
-<section id="done"><h2>Your song is ready to play and download</h2><div id="info" class="note" style="margin:0"></div>
-<div id="now"></div><audio id="au" controls></audio>
-<div class="btns"><button id="dl">Download MP3</button><button class="alt" id="again">Make another</button></div><div id="msg"></div></section>
-</main>
+  <!-- HEADER -->
+  <header class="topbar">
 
-<script src="assets/js/lame.min.js"></script>
-<script src="assets/js/jszip.min.js"></script>
-<script src="script.js"></script></body></html>
+    <div class="brand">
+
+      <div class="logo">
+        LSG
+      </div>
+
+      <div class="brand-text">
+        <h1>Laban Song Generator</h1>
+        <p>Write • Create • Inspire</p>
+      </div>
+
+    </div>
+
+    <button
+      id="themeBtn"
+      class="icon-btn"
+      type="button"
+      aria-label="Toggle dark mode"
+    >
+      ☾
+    </button>
+
+  </header>
+
+
+  <!-- MAIN CONTENT -->
+  <main class="container">
+
+    <!-- HERO -->
+    <section class="hero">
+
+      <span class="badge">
+        AI-READY SONG CREATION
+      </span>
+
+      <h2>
+        Turn your ideas into a song.
+      </h2>
+
+      <p>
+        Describe your song, choose your style and generate
+        a structured song draft that you can edit, copy or download.
+      </p>
+
+    </section>
+
+
+    <!-- APPLICATION -->
+    <section class="grid">
+
+
+      <!-- SONG SETTINGS -->
+      <form id="songForm" class="card">
+
+        <div class="card-head">
+
+          <div>
+
+            <h3>
+              Song Settings
+            </h3>
+
+            <p>
+              Start with your idea and customize your song.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- TITLE -->
+        <label for="title">
+          Song Title
+        </label>
+
+        <input
+          id="title"
+          name="title"
+          type="text"
+          placeholder="e.g. We Meet Again"
+          required
+        >
+
+
+        <!-- THEME -->
+        <label for="theme">
+          Song Idea / Message
+        </label>
+
+        <textarea
+          id="theme"
+          name="theme"
+          rows="5"
+          placeholder="What should the song be about?"
+          required
+        ></textarea>
+
+
+        <!-- GENRE + LANGUAGE -->
+        <div class="two-col">
+
+          <div>
+
+            <label for="genre">
+              Genre
+            </label>
+
+            <select id="genre">
+
+              <option value="Gospel">
+                Gospel
+              </option>
+
+              <option value="Afrobeats">
+                Afrobeats
+              </option>
+
+              <option value="R&B">
+                R&B
+              </option>
+
+              <option value="Reggae">
+                Reggae
+              </option>
+
+              <option value="Pop">
+                Pop
+              </option>
+
+              <option value="Hip-Hop">
+                Hip-Hop
+              </option>
+
+              <option value="Traditional / Zambian">
+                Traditional / Zambian
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div>
+
+            <label for="language">
+              Language
+            </label>
+
+            <select id="language">
+
+              <option value="English">
+                English
+              </option>
+
+              <option value="Icibemba">
+                Icibemba
+              </option>
+
+              <option value="Chinyanja">
+                Chinyanja
+              </option>
+
+              <option value="Tonga">
+                Tonga
+              </option>
+
+              <option value="Mixed English & Icibemba">
+                Mixed English & Icibemba
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <!-- MOOD + STRUCTURE -->
+        <div class="two-col">
+
+          <div>
+
+            <label for="mood">
+              Mood
+            </label>
+
+            <select id="mood">
+
+              <option value="Uplifting">
+                Uplifting
+              </option>
+
+              <option value="Worshipful">
+                Worshipful
+              </option>
+
+              <option value="Joyful">
+                Joyful
+              </option>
+
+              <option value="Emotional">
+                Emotional
+              </option>
+
+              <option value="Celebratory">
+                Celebratory
+              </option>
+
+              <option value="Reflective">
+                Reflective
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div>
+
+            <label for="structure">
+              Structure
+            </label>
+
+            <select id="structure">
+
+              <option value="Verse 1 + Chorus + Verse 2 + Bridge">
+                Verse 1 + Chorus + Verse 2 + Bridge
+              </option>
+
+              <option value="Verse + Chorus">
+                Verse + Chorus
+              </option>
+
+              <option value="Verse 1 + Chorus + Verse 2 + Chorus">
+                Verse 1 + Chorus + Verse 2 + Chorus
+              </option>
+
+              <option value="Full song">
+                Full Song
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <!-- EXTRA INSTRUCTIONS -->
+        <label for="extra">
+          Extra Instructions
+          <span class="muted">
+            (optional)
+          </span>
+        </label>
+
+        <textarea
+          id="extra"
+          rows="3"
+          placeholder="e.g. Make it suitable for a choir reunion and include a memorable chorus."
+        ></textarea>
+
+
+        <!-- BUTTONS -->
+        <div class="actions">
+
+          <button
+            class="primary"
+            type="submit"
+          >
+            ✨ Generate Song
+          </button>
+
+          <button
+            id="clearBtn"
+            class="secondary"
+            type="button"
+          >
+            Clear
+          </button>
+
+        </div>
+
+
+        <p class="security-note">
+          This version generates a local draft in your browser.
+          No API key is stored in this page.
+        </p>
+
+      </form>
+
+
+
+      <!-- GENERATED SONG -->
+      <section class="card output-card">
+
+        <div class="card-head output-head">
+
+          <div>
+
+            <h3>
+              Generated Song
+            </h3>
+
+            <p id="status">
+              Your song will appear here.
+            </p>
+
+          </div>
+
+
+          <div class="output-actions">
+
+            <button
+              id="copyBtn"
+              class="small-btn"
+              type="button"
+            >
+              Copy
+            </button>
+
+            <button
+              id="downloadBtn"
+              class="small-btn"
+              type="button"
+            >
+              Download
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <article
+          id="output"
+          class="song-output empty"
+        >
+
+          <div class="empty-icon">
+            ♪
+          </div>
+
+          <h4>
+            Your song is waiting
+          </h4>
+
+          <p>
+            Fill in the song idea and click
+            <b>Generate Song</b>.
+          </p>
+
+        </article>
+
+      </section>
+
+    </section>
+
+
+    <!-- INFORMATION -->
+    <section class="info card">
+
+      <h3>
+        Connect Real AI Generation
+      </h3>
+
+      <p>
+        The next stage can connect this application to
+        an AI music or songwriting service.
+        API keys must be stored on a secure backend,
+        never directly inside public JavaScript.
+      </p>
+
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer>
+
+    <p>
+      © <span id="year"></span>
+      Laban Song Generator
+      • Built for creative songwriting
+    </p>
+
+  </footer>
+
+
+  <!-- JAVASCRIPT -->
+  <script src="script.js"></script>
+
+</body>
+</html>
